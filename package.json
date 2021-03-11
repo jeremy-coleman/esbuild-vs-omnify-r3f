@@ -1,0 +1,40 @@
+{
+  "name": "omnify-vs-esbuild-r3f",
+  "private": true,
+  "scripts": {
+    "start": "node start --serve",
+    "omnify": "node start --omnify",
+    "esbuild": "node start --esbuild"
+  },
+  "prettier": {
+    "arrowParens": "always",
+    "bracketSpacing": false,
+    "jsxBracketSameLine": false,
+    "printWidth": 120,
+    "quoteProps": "consistent",
+    "semi": false,
+    "tabWidth": 2,
+    "trailingComma": "none"
+  },
+  "importSort": {
+    ".js, jsx, .ts, .tsx": {
+      "style": "module",
+      "parser": "typescript"
+    }
+  },
+  "dependencies": {
+    "react": "17.0.1",
+    "react-dom": "17.0.1",
+    "react-three-fiber": "5.3.19",
+    "three": "0.126.1",
+    "react-hot-loader": "4.13.0"
+  },
+  "devDependencies": {
+    "ws": "7.4.4",
+    "esbuild": "0.9.0",
+    "@types/node": "^14.14.25",
+    "sucrase": "3.17.1",
+    "typescript": "4.1.4",
+    "lodash": "4.17.21"
+  }
+}
