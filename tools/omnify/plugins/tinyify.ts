@@ -1,6 +1,34 @@
 import { Readable, Transform } from "stream"
-import { minify } from "terser"
+import { minify, MinifyOptions } from "terser"
 import { duplexify } from "../streams/duplexify"
+
+var terser_fast = {
+  ecma: 2020,
+  sourceMap: false,
+  mangle: true,
+  compress: false
+}
+
+var terser_good : MinifyOptions= {
+  ecma: 2020,
+  sourceMap: false,
+  format: {
+    ascii_only: true,
+    wrap_iife: true,
+    wrap_func_args: true
+  },
+  keep_classnames: false,
+  keep_fnames: false,
+  mangle: {
+    safari10: true,
+  },
+  compress: {
+    negate_iife: false,
+    hoist_funs: true,
+    hoist_vars: true,
+    //passes: 5
+  }
+}
 
 class StringTransform extends Transform {
   transformFn: (s: string) => any
@@ -29,7 +57,7 @@ class StringTransform extends Transform {
   }
 }
 
-export function uglifyStream(opts) {
+export function terserStream(opts) {
   var rs = new Readable({ objectMode: true })
   var stream = duplexify()
 
@@ -58,15 +86,6 @@ export function tinyify(b, opts) {
   if (typeof b !== "object") {
     throw new Error("tinyify: must be used as a plugin, not a transform")
   }
-  var uglifyOpts = {
-    sourceMap: false,
-    output: {
-      ascii_only: true,
-    },
-    mangle: {
-      safari10: true,
-    },
-  }
 
-  b.pipeline.get("pack").push(uglifyStream(uglifyOpts))
+  b.pipeline.get("pack").push(terserStream(terser_good))
 }

@@ -17,10 +17,10 @@ const {HotReloadPlugin} = require("./plugins/hmr-plugin")
 //const {babelify} = require("./transforms/babelify")
 //const {lessify} = require("./transforms/lessify")
 
-// const {aliasify} = require("./transforms/aliasify")
+const {aliasify} = require("./transforms/aliasify")
 
 
-// const {tinyify} = require("./plugins/tinyify")
+const {tinyify} = require("./plugins/tinyify")
 
 
 module.exports = {
@@ -33,8 +33,9 @@ module.exports = {
   envify,
   tsify,
   HotReloadPlugin,
-  // tinyify,
-  // lessify,
-  // aliasify,
-  // babelify,
+
+  tinyify,
+  aliasify,
+  //lessify,
+  //babelify,
 }

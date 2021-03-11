@@ -1,4 +1,4 @@
-const {browserify, sucrasify, createDevServer, HotReloadPlugin} = require("./tools/omnify")
+const {browserify, sucrasify, createDevServer, HotReloadPlugin, tinyify, envify, aliasify} = require("./tools/omnify")
 
 var bundler = browserify("src/index.tsx", {
   cache: {},
@@ -9,7 +9,11 @@ var bundler = browserify("src/index.tsx", {
   transform: [sucrasify]
 })
 
-const serve = () => {
+//
+// ─── HOT DEV SERVER ─────────────────────────────────────────────────────────────
+//
+
+const omnify_serve_hot = () => {
   var fs = require("fs")
 
   let srcWatcher = fs.watch("src", {recursive: true})
@@ -50,9 +54,14 @@ const serve = () => {
   })
 }
 
+//
+// ─── REGULAR OMNIFY ─────────────────────────────────────────────────────────────
+//
+
 const omnify = () => {
   var fs = require("fs")
   console.time("OMNIFY:BUNDLETIME")
+
   var bundler = browserify("src/index.tsx", {
     cache: {},
     packageCache: {},
@@ -65,6 +74,55 @@ const omnify = () => {
   bundler.bundle().pipe(fs.createWriteStream("public/app.js").on("close", () => console.timeEnd("OMNIFY:BUNDLETIME")))
 }
 
+
+//
+// ─── OMNIFY WITH TERSER AND THINGS ──────────────────────────────────────────────
+//
+
+const omnify_bundle_minify = () => {
+  var fs = require("fs")
+  //var shakeify = require("common-shakeify")
+  //var packflat = require("browser-pack-flat/plugin")
+
+  console.time("OMNIFY:BUNDLETIME")
+  var bundler = browserify("src/index.tsx", {
+    cache: {},
+    packageCache: {},
+    debug: true,
+    sourceMaps: false,
+    extensions: [".ts", ".tsx", ".js", ".jsx"],
+    plugin: [
+      //shakeify,
+      //packflat,
+      tinyify
+    ],
+    transform: [
+      sucrasify,
+      [envify({NODE_ENV: "production"}), {global: true}]
+      // [
+      //   aliasify.configure({
+      //     aliases: {
+      //       "react": "react/cjs/react.production.min.js",
+      //       "react-dom": "react-dom/cjs/react-dom.production.min.js",
+      //       "scheduler": "scheduler/cjs/scheduler.production.min.js",
+      //       "react-reconciler":"react-reconciler/cjs/react-reconciler.production.min.js"
+      //       //"react": "preact/compat",
+      //       //"react-dom": "preact/compat"
+      //     },
+      //     appliesTo: { includeExtensions: [".js", ".jsx", ".tsx", ".ts"] },
+      //   }),
+      //   { global: true },
+      // ]
+    ]
+  })
+
+  bundler.bundle().pipe(fs.createWriteStream("public/app.js").on("close", () => console.timeEnd("OMNIFY:BUNDLETIME")))
+}
+
+//
+// ─── STANDARD ESBUILD ────────────────────────────────────────────────────────────
+//
+
 const esbuild = () => {
   const _esbuild = require("esbuild")
   //const {lessLoader} = require("esbuild-plugin-less")
@@ -75,6 +133,7 @@ const esbuild = () => {
         "process.env.NODE_ENV": '"production"'
       },
       bundle: true,
+      minify: true,
       loader: {
         ".svg": "file"
       },
@@ -88,11 +147,41 @@ const esbuild = () => {
   build()
 }
 
+//
+// ─── ESBUILD BUILTIN DEVSERVER (NEEDS PERMISSION) ─────────────────────────────────
+//
+
+const esbuild_serve = () => {
+  require("esbuild")
+    .serve(
+      {
+        servedir: "public"
+      },
+      {
+        define: {
+          "process.env.NODE_ENV": '"production"'
+        },
+        entryPoints: ["src/index.tsx"],
+        outdir: "public",
+        bundle: true,
+        minify: true
+      }
+    )
+    .then((server) => {
+      // Call "stop" on the web server when you're done
+      console.log("probably listing on https://localhost:8000")
+      process.on("exit", () => {
+        server.stop()
+      })
+    })
+}
+
 const args = process.argv.slice(2)
 
 args.forEach((arg) => console.info(arg))
 
 args.includes("--esbuild") && esbuild()
 args.includes("--omnify") && omnify()
-//args.includes("--watch") && watch()
-args.includes("--serve") && serve()
+args.includes("--minify-omnify") && omnify_bundle_minify()
+args.includes("--serve") && omnify_serve_hot()
+args.includes("--serve-esbuild") && esbuild_serve()
