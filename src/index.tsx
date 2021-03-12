@@ -1,7 +1,3 @@
-import React from 'react';
-import { render } from 'react-dom';
-import { App } from './App';
+import {renderScene} from './app-p3f/App'
 
-
-render(<App />, document.getElementById('root'));
-
+renderScene()

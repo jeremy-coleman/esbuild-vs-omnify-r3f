@@ -1,8 +1,8 @@
-#instructions
-node start and open
-hold alt + left click to create some circles
-edit the bottom buttons in ~/src/components around line 60 to check if HMR is working
-if it isn't working correctly, the circles will reset and the entry modal will re-appear, otherwise it should hot update
+wip 
 
-thanks https://github.com/dkozar/raycast-dom 
+if you want to use the react demo instead of the prect, change the "react-hot-loader" dependency in pkgjson to use the npm one
+alsooo, the dev server is using global transforms for the preact demo.
 
+You can remove the {global: true} on the sucrase transform to speed things up a little bit.
+
+I havn't reconfigured all the bundle configs to use global transform for preact - so they will probably error if you try to bundle the preact demo. They work fine on the react demo though

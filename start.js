@@ -1,13 +1,5 @@
 const {browserify, sucrasify, createDevServer, HotReloadPlugin, tinyify, envify, aliasify} = require("./tools/omnify")
 
-var bundler = browserify("src/index.tsx", {
-  cache: {},
-  packageCache: {},
-  debug: true,
-  sourceMaps: false,
-  extensions: [".ts", ".tsx", ".js", ".jsx"],
-  transform: [sucrasify]
-})
 
 //
 // ─── HOT DEV SERVER ─────────────────────────────────────────────────────────────
@@ -38,7 +30,10 @@ const omnify_serve_hot = () => {
     sourceMaps: false,
     extensions: [".ts", ".tsx", ".js", ".jsx"],
     plugin: [HotReloadPlugin],
-    transform: [sucrasify.configure({hot: true})]
+    transform: [
+      //have to run as a global transform because some of the libs in the preact demo are using esm 
+      [sucrasify.configure({hot: true}), {global: true}]
+    ]
   })
 
   bundler.on("bundle", () => {
@@ -68,7 +63,9 @@ const omnify = () => {
     debug: true,
     sourceMaps: false,
     extensions: [".ts", ".tsx", ".js", ".jsx"],
-    transform: [sucrasify]
+    transform: [
+      sucrasify
+    ]
   })
 
   bundler.bundle().pipe(fs.createWriteStream("public/app.js").on("close", () => console.timeEnd("OMNIFY:BUNDLETIME")))
@@ -99,6 +96,8 @@ const omnify_bundle_minify = () => {
     transform: [
       sucrasify,
       [envify({NODE_ENV: "production"}), {global: true}]
+
+
       // [
       //   aliasify.configure({
       //     aliases: {
@@ -113,6 +112,7 @@ const omnify_bundle_minify = () => {
       //   }),
       //   { global: true },
       // ]
+
     ]
   })
 
@@ -185,3 +185,6 @@ args.includes("--omnify") && omnify()
 args.includes("--minify-omnify") && omnify_bundle_minify()
 args.includes("--serve") && omnify_serve_hot()
 args.includes("--serve-esbuild") && esbuild_serve()
+
+//default for "node start.js"
+args[0] == null && omnify_serve_hot()

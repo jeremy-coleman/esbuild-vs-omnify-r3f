@@ -24,11 +24,14 @@
     }
   },
   "dependencies": {
+    "htm": "3.0.4",
+    "preact": "10.5.12",
+    "three-elements": "0.3.0",
     "react": "17.0.1",
     "react-dom": "17.0.1",
     "react-three-fiber": "5.3.19",
     "three": "0.126.1",
-    "react-hot-loader": "4.13.0"
+    "react-hot-loader": "jeremy-coleman/preact-hot-loader"
   },
   "devDependencies": {
     "unreachable-branch-transform": "0.5.1",
