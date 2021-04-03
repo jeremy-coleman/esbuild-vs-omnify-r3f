@@ -4,7 +4,7 @@ node browserify --fast
 node esbuild --fast
 node omnify --fast
 
-node start too dev a r3f scene. 
+node start to dev a r3f scene. 
 
 try changing the colors on the Box component in src/app-r3f/App.tsx 
 <meshStandardMaterial color={hovered ? 'hotpink' : 'green'} /> 
