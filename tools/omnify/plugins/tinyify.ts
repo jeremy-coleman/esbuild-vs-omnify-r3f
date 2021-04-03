@@ -9,7 +9,7 @@ var terser_fast = {
   compress: false
 }
 
-var terser_good : MinifyOptions= {
+var terser_good: MinifyOptions = {
   ecma: 2020,
   sourceMap: false,
   format: {
@@ -20,12 +20,12 @@ var terser_good : MinifyOptions= {
   keep_classnames: false,
   keep_fnames: false,
   mangle: {
-    safari10: true,
+    safari10: true
   },
   compress: {
     negate_iife: false,
     hoist_funs: true,
-    hoist_vars: true,
+    hoist_vars: true
     //passes: 5
   }
 }
@@ -50,8 +50,7 @@ class StringTransform extends Transform {
       var transformed = this.transformFn(this.string)
       this.push(transformed)
       cb()
-    }
-    catch (err) {
+    } catch (err) {
       cb(err)
     }
   }
@@ -61,13 +60,11 @@ export function terserStream(opts) {
   var rs = new Readable({ objectMode: true })
   var stream = duplexify()
 
-  
   stream.setWritable(
     new StringTransform((source) => {
-      
       minify(source, {
         sourceMap: false,
-        ...opts,
+        ...opts
       })
         .then((minified) => {
           rs.push(minified.code)

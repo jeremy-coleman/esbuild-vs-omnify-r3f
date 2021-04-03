@@ -2,7 +2,7 @@
   "compilerOptions": {
     "outDir": "_never",
     "declaration": false,
-    "jsx": "preserve",
+    "jsx": "react",
     "moduleResolution": "node",
     "allowSyntheticDefaultImports": true,
     "allowJs": true,
@@ -10,10 +10,8 @@
     "lib": ["dom", "esnext"],
     "target": "esnext",
     "module": "esnext",
-    "baseUrl": "./src",
     "experimentalDecorators": true,
     "skipLibCheck": true
   },
-  "include": ["src"],
-  "exclude": ["node_modules"]
+  "include": ["omnify/bundler"]
 }

@@ -1,24 +1,5 @@
 import { Transform } from "stream"
 
-class DestroyableTransform extends Transform {
-  _destroyed: boolean
-
-  constructor(opts) {
-    super(opts)
-    this._destroyed = false
-  }
-
-  destroy(err: any) {
-    if (this._destroyed) return
-    this._destroyed = true
-    var self = this
-    process.nextTick(function () {
-      if (err) self.emit("error", err)
-      self.emit("close")
-    })
-  }
-}
-
 // a noop _transform function
 function noop(chunk, enc, callback) {
   callback(null, chunk)
@@ -42,7 +23,7 @@ function create(construct) {
 
 // main export, just make me a transform stream!
 var _throughText = create(function (options, transform, flush) {
-  var t2 = new DestroyableTransform(options)
+  var t2 = new Transform(options)
   t2._transform = transform
   if (flush) t2._flush = flush
   return t2
@@ -50,14 +31,14 @@ var _throughText = create(function (options, transform, flush) {
 
 let _throughObj = {
   obj: create(function (options, transform, flush) {
-    var t2 = new DestroyableTransform(Object.assign({ objectMode: true, highWaterMark: 16 }, options))
+    var t2 = new Transform(Object.assign({ objectMode: true, highWaterMark: 16 }, options))
 
     t2._transform = transform
 
     if (flush) t2._flush = flush
 
     return t2
-  }),
+  })
 }
 
 let through = Object.assign(_throughText, _throughObj)

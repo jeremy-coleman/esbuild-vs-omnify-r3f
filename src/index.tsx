@@ -1,3 +1,3 @@
-import {renderScene} from './app-p3f/App'
+import { renderScene } from "./app-r3f"
 
 renderScene()

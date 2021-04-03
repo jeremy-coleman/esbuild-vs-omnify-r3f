@@ -154,7 +154,7 @@ class Splicer extends Duplex {
   }
 
   get(...args) {
-    let key = args[0];
+    let key = args[0]
 
     if (typeof key === "string") {
       var ix = this.indexOf(key)
@@ -206,7 +206,6 @@ class Splicer extends Duplex {
     return this._streams.length
   }
 }
-
 
 class LabeledStreamSplicer extends Splicer {
   constructor(streams) {

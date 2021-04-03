@@ -1,4 +1,4 @@
-import { Transform } from "streamx"
+import { Transform } from "stream"
 
 class DestroyableTransform extends Transform {
   _destroyed: boolean

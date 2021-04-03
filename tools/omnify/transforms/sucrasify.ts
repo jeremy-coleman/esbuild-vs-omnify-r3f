@@ -17,7 +17,7 @@ var HotConfig = (file) => {
   /** @type import('sucrase').Options */
   let config = {
     transforms: ["typescript", "imports", "jsx", "react-hot-loader"],
-    production: false,
+    production: true,
     filePath: file,
     //enableLegacyTypeScriptModuleInterop: true
     enableLegacyBabel5ModuleInterop: true,

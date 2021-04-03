@@ -1,5 +1,6 @@
-import React, { useRef, useState } from 'react'
-import { Canvas, useFrame } from 'react-three-fiber'
+import React, { useRef, useState } from "react"
+import { Canvas, useFrame } from "@react-three/fiber"
+import { MeshProps } from "@react-three/fiber/dist/declarations/src/three-types"
 
 /**
  * try changing the colors in
@@ -8,14 +9,15 @@ import { Canvas, useFrame } from 'react-three-fiber'
  */
 
 function Box(props) {
-  const mesh = useRef()
+  const mesh = useRef<MeshProps>()
   const [hovered, setHover] = useState(false)
   const [active, setActive] = useState(false)
-  // Rotate mesh every frame, (outside of React)
+
+  // Rotate mesh every frame, (outside of React) - the number is the speed
   useFrame(() => {
     mesh.current.rotation.x = mesh.current.rotation.y += 0.01
   })
-  
+
   return (
     <mesh
       {...props}
@@ -24,9 +26,10 @@ function Box(props) {
       scale={active ? [1.5, 1.5, 1.5] : [1, 1, 1]}
       onClick={(e) => setActive(!active)}
       onPointerOver={(e) => setHover(true)}
-      onPointerOut={(e) => setHover(false)}>
+      onPointerOut={(e) => setHover(false)}
+    >
       <boxBufferGeometry args={[1, 1, 1]} />
-      <meshStandardMaterial color={hovered ? 'hotpink' : 'green'} />
+      <meshStandardMaterial color={hovered ? "hotpink" : "red"} />
     </mesh>
   )
 }

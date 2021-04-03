@@ -69,4 +69,3 @@ class DuplexWrapper extends Duplex {
 }
 
 export { DuplexWrapper }
-

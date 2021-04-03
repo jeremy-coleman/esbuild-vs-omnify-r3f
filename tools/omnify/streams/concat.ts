@@ -2,11 +2,13 @@
 /*                                ConcatStream                                */
 /* -------------------------------------------------------------------------- */
 
-import { Writable , WritableOptions } from "stream"
+import { Writable, WritableOptions } from "stream"
 
-type Opts = WritableOptions & {
-  encoding?: "u8" | "uint8" | "uint8array" | "array" | "string" | "buffer" | string
-} | ((args: any) => void)
+type Opts =
+  | (WritableOptions & {
+      encoding?: "u8" | "uint8" | "uint8array" | "array" | "string" | "buffer" | string
+    })
+  | ((args: any) => void)
 
 class ConcatStream extends Writable {
   encoding: any

@@ -2,6 +2,13 @@ var path = require("path");
 const { Transform, PassThrough } = require("stream");
 const fs = require("fs");
 
+//
+// ─── WARNING!!!! SUPER WIP ──────────────────────────────────────────────────────────
+//
+
+  
+
+
 const projectSourceDirectory = path.resolve(process.cwd(), "src");
 
 const sourceDirs = fs

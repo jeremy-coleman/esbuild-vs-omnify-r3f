@@ -45,7 +45,7 @@ export function startServer({ port, sslKey, sslCert }) {
         client.send(
           JSON.stringify({
             type: "change",
-            data: metadata,
+            data: metadata
           }),
           logError
         )
@@ -59,12 +59,12 @@ export function startServer({ port, sslKey, sslCert }) {
         client.send(
           JSON.stringify({
             type: "bundle_error",
-            data: { error: error.toString() },
+            data: { error: error.toString() }
           }),
           logError
         )
       })
-    },
+    }
   }
 
   wss.on("connection", (client) => {
@@ -116,7 +116,7 @@ function loader(mappings, entryPoints, options) {
   var scope = {
     mappings: mappings,
     cache: {},
-    reloadHooks: {},
+    reloadHooks: {}
   }
 
   function startClient() {
@@ -166,9 +166,7 @@ function loader(mappings, entryPoints, options) {
   }
 
   function unknownUseCase() {
-    throw new Error(
-      "HotReload::Unknown use-case encountered!"
-    )
+    throw new Error("HotReload::Unknown use-case encountered!")
   }
 
   // returns loaded module from cache or if not found, then
@@ -201,8 +199,8 @@ function loader(mappings, entryPoints, options) {
               )
             }
             scope.reloadHooks[id] = realHook
-          },
-        },
+          }
+        }
       })
 
       mappings[id][0].call(
@@ -488,7 +486,7 @@ function HotReloadPlugin(b, opts: Options = {}) {
     debug = false,
     basedir = process.cwd(),
     sslCert = null,
-    sslKey = null,
+    sslKey = null
   } = opts
 
   // server is alive as long as watchify is running
@@ -511,7 +509,7 @@ function HotReloadPlugin(b, opts: Options = {}) {
     clientEnabled: client,
     debug: debug,
     babel: babel,
-    clientRequires: clientRequires,
+    clientRequires: clientRequires
   }
 
   clientRequires.forEach((file) => b.require(file, opts))
@@ -612,7 +610,7 @@ function HotReloadPlugin(b, opts: Options = {}) {
           mappings[file] = [
             sourceWithoutMaps,
             deps,
-            { id: file, hash: hash, browserifyId: id, sourcemap: adjustedSourcemap },
+            { id: file, hash: hash, browserifyId: id, sourcemap: adjustedSourcemap }
           ]
           next(null, row)
         },
@@ -767,12 +765,12 @@ function getHash(data) {
 }
 
 function defineColor(start: number, end: number) {
-  const open = `\x1b[${start}m`;
-  const close = `\x1b[${end}m`;
-  const regex = new RegExp(`\\x1b\\[${end}m`, "g");
+  const open = `\x1b[${start}m`
+  const close = `\x1b[${end}m`
+  const regex = new RegExp(`\\x1b\\[${end}m`, "g")
   return (str: string | number) => {
-    return open + ("" + str).replace(regex, open) + close;
-  };
+    return open + ("" + str).replace(regex, open) + close
+  }
 }
 
 var colors = {
@@ -822,8 +820,7 @@ var colors = {
   bgLightBlue: defineColor(104, 49),
   bgLightMagenta: defineColor(105, 49),
   bgLightCyan: defineColor(106, 49),
-  bgLightGray: defineColor(47, 49),
-};
-
+  bgLightGray: defineColor(47, 49)
+}
 
 export { HotReloadPlugin }
